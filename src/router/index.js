@@ -38,38 +38,37 @@ import Layout from '@/layout'
 export const constantRoutes = [
  
   {
+    name: 'Login',
     path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
+    component: () => import('@/views/login/index')
   },
-  // {
-  //   path: '/auth-redirect',
-  //   component: () => import('@/views/login/auth-redirect'),
-  //   hidden: true
-  // },
-  // {
-  //   path: '/404',
-  //   component: () => import('@/views/error-page/404'),
-  //   hidden: true
-  // },
-  // {
-  //   path: '/401',
-  //   component: () => import('@/views/error-page/401'),
-  //   hidden: true
-  // },
+  {
+    path: '/404',
+    component: () => import('@/views/404')
+  },
+
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
-      }
-    ]
+    children: [{
+      path: 'dashboard',
+      name: 'Dashboard',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '质量总览', icon: 'dashboard' }
+    }]
   },
+  {
+    path: '/inspection',
+    component: Layout,
+    children: [{
+      path: 'inspection',
+      name: 'Inspection',
+      component: () => import('@/views/inspection/index'),
+      meta: { title: '检验报告', icon: 'inspection',affix: true }
+    }]
+  },
+  
 
 ]
 
@@ -78,10 +77,9 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+ 
 
 
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
