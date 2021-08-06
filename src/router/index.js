@@ -68,7 +68,16 @@ export const constantRoutes = [
       meta: { title: '检验报告', icon: 'inspection',affix: true }
     }]
   },
-  
+  {
+    path: '/extracting',
+    component: Layout,
+    children: [{
+      path: 'extracting',
+      name: 'Extracting',
+      component: () => import('@/views/extracting/index'),
+      meta: { title: '抽取日志', icon: 'extracting',affix: true }
+    }]
+  },
 
 ]
 
