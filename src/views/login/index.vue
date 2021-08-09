@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="帐号"
           name="username"
           type="text"
           tabindex="1"
@@ -29,11 +29,10 @@
           <el-input
             ref="password"
             v-model="loginForm.password"
-            placeholder="Password"
+            placeholder="密码"
             name="password"
             tabindex="2"
             autocomplete="on"
-            @keyup.native="checkCapslock"
             @keyup.enter.native="handleLogin"
           />
         </el-form-item>
@@ -43,24 +42,46 @@
 
   </div>
 </template>
-
 <script>
+import { getToken } from "@/api/login";
 export default {
   name: 'Login',
   data() {
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
       loading:false,
-      loginRules:{}
+      loginRules:{
+        username: [
+          { required: true, message: "帐号不能为空", trigger: "blur" }
+        ],
+        password: [{ required: true, message: "密码不能为空", trigger: "blur" }],
+      }
     }
   },
+  mounted() {
 
-  created() {},
-  mounted() {},
-  methods: {}
+  },
+  methods: {
+    handleLogin(){
+      this.$refs["loginForm"].validate(valid => {
+        if (valid) {
+          getToken(this.loginForm).then(res => {
+            console.log(res);
+            if (res.code == 0) {
+              this.loading = false;
+              this.msg = "";
+              storage.set("userToken", getUUID()); //自己手动生成的，用于路由验证通过
+              storage.set("userInof",res.result);
+              this.$router.push({ path: "/dashboard" });
+            }
+          });
+        }
+      });
+    }
+  }
 }
 </script>
 

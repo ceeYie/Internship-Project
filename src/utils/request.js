@@ -6,15 +6,15 @@ import store from '@/store'
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  timeout: 5000 // request timeout
+  timeout: 50000 // request timeout
 })
-
 
 service.interceptors.request.use(
   config => {
-
     if (store.getters.token) {
-      config.headers['X-Token'] = '12345'
+      config.headers['Authorization'] = ''
+      config.headers['TENANT-CODE'] = 'ASP0001'
+      config.headers['SERVICE'] = 'dst'
     }
     return config
   },
@@ -28,6 +28,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
+    console.log(res)
     if (res.code !== 20000) {
 
     } else {
