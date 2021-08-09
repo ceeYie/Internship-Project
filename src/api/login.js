@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getRoutes() {
   return request({
-    url: '/vue-element-admin/routes',
+    url: '/auth/oauth/token',
     method: 'get'
   })
 }
