@@ -169,7 +169,7 @@
 export default {
   data() {
     return {
-      dialogVisible: true,
+      dialogVisible: false,
       pageVo: { currPage: 1, pageSize: 10 },
       totalSize: 0,
       formSearch: {
@@ -197,14 +197,7 @@ export default {
     //查询医院列表
     getHospital() {
       this.viewLoading = true;
-      hospitalList(this.formSearch).then((res) => {
-        this.viewLoading = false;
-        if (res.code == 0) {
-          this.hospital = res.result;
-        } else {
-          this.$message.error(res.msg);
-        }
-      });
+     
     },
     //搜索
     search() {

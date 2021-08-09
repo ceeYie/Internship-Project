@@ -78,6 +78,16 @@ export const constantRoutes = [
       meta: { title: '抽取日志', icon: 'extracting',affix: true }
     }]
   },
+  {
+    path: '/user',
+    component: Layout,
+    children: [{
+      path: 'user',
+      name: 'User',
+      component: () => import('@/views/user/index'),
+      meta: { title: '用户管理', icon: 'user',affix: true }
+    }]
+  },
 
 ]
 
