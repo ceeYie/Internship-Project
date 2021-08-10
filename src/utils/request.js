@@ -1,21 +1,26 @@
 import axios from 'axios'
 import {  Message } from 'element-ui'
-import store from '@/store'
+import store from '@/utils/auth'
 
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: 'api', // process.env.VUE_APP_BASE_API
   timeout: 50000 // request timeout
 })
 
+let tonke = store.get('userToken')
+let login = store.get('login')
+console.log('login',login)
 service.interceptors.request.use(
   config => {
-    if (store.getters.token) {
-      config.headers['Authorization'] = ''
-      config.headers['TENANT-CODE'] = 'ASP0001'
-      config.headers['SERVICE'] = 'dst'
+    if(!login){
+      config.headers['Authorization'] =  tonke
+    }else{
+      config.headers['Authorization'] = 'Basic QVNQMDAwMTpBU1AwMDAx'
     }
+    config.headers['TENANT-CODE'] = 'ASP0001'
+    config.headers['SERVICE'] = 'dst'
     return config
   },
   error => {
@@ -29,11 +34,8 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     console.log(res)
-    if (res.code !== 20000) {
 
-    } else {
-      return res
-    }
+    return res
   },
   error => {
     console.log('err' + error) 

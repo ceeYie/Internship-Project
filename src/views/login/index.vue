@@ -44,13 +44,18 @@
 </template>
 <script>
 import { getToken } from "@/api/login";
+import store from '@/utils/auth'
 export default {
   name: 'Login',
   data() {
     return {
       loginForm: {
         username: '',
-        password: ''
+        password: '',
+        orgCode:"1251000045071756XY",
+        branchCode:'01',
+        medicalCombo:'01',
+        operatorNo:'0001'
       },
       loading:false,
       loginRules:{
@@ -66,16 +71,17 @@ export default {
   },
   methods: {
     handleLogin(){
+      store.set("login",'login');
       this.$refs["loginForm"].validate(valid => {
         if (valid) {
           getToken(this.loginForm).then(res => {
-            console.log(res);
-            if (res.code == 0) {
-              this.loading = false;
-              this.msg = "";
-              storage.set("userToken", getUUID()); //自己手动生成的，用于路由验证通过
-              storage.set("userInof",res.result);
+            if (res.code==500) {
+              this.$message.error(res.msg);
+            }else{
+              console.log(res);
+              store.set("userToken",res.access_token); //自己手动生成的，用于路由验证通过
               this.$router.push({ path: "/dashboard" });
+              store.remove('login')
             }
           });
         }

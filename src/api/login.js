@@ -2,8 +2,9 @@ import request from '@/utils/request'
 
 export function getToken(data) {
   return request({
-    url: `/auth/oauth/token?username=${data.username}&password=${data.password}`,
-    method: 'get'
+    url: `/auth/oauth/token?grant_type=password`,
+    method: 'get',
+    params:data
   })
 }
 

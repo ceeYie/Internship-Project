@@ -37,7 +37,7 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 //import SizeSelect from '@/components/SizeSelect'
 //import Search from '@/components/HeaderSearch'
-
+import store from '@/utils/auth'
 export default {
   components: {
     Breadcrumb,
@@ -58,8 +58,8 @@ export default {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
+    logout() {
+      store.removeAll()
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }

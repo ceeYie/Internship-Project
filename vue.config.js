@@ -29,14 +29,19 @@ module.exports = {
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
-  devServer: {
-    port: port,
-    open: true,
-    overlay: {
-      warnings: false,
-      errors: false
-    },
-    before: require('./mock/mock-server.js')
+    devServer: {
+      host: '0.0.0.0',
+      port: 8080,
+      https: false,
+      proxy: {
+          '/api': {             
+              target: 'http://192.168.0.171:18140',                
+              changeOrigin: true,
+              pathRewrite: {
+                  '^/api': '' //路径重写 
+              }
+          },
+      },
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
