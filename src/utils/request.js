@@ -14,7 +14,7 @@ let login = store.get('login')
 console.log('login',login)
 service.interceptors.request.use(
   config => {
-    if(!login){
+    if(tonke){
       config.headers['Authorization'] =  tonke
     }else{
       config.headers['Authorization'] = 'Basic QVNQMDAwMTpBU1AwMDAx'
