@@ -79,7 +79,7 @@ export default {
               this.$message.error(res.msg);
             }else{
               console.log(res);
-              store.set("userToken",res.access_token); //自己手动生成的，用于路由验证通过
+              store.set("userToken",res.access_token); 
               this.$router.push({ path: "/dashboard" });
               store.remove('login')
             }
