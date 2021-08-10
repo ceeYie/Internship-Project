@@ -7,8 +7,8 @@
         :model="formSearch"
         class="demo-form-inline"
       >
-        <el-form-item label="用户名" prop="name">
-          <el-input v-model="formSearch.name" placeholder="请输入用户名" />
+        <el-form-item label="用户名" prop="keyWord">
+          <el-input v-model="formSearch.keyWord" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item>
           <el-button
@@ -32,7 +32,6 @@
     </div>
     <el-table
       :data="hospital"
-      @selection-change="handleSelectionChange"
       style="width: 100%"
       :header-cell-style="headClass"
       v-loading="viewLoading"
@@ -55,30 +54,33 @@
       @current-change="handleCurrentChange"
       :page-size="100"
       layout="total, prev, pager, next"
-      :total="pageVo.currPage"
+      :total="pageVo.pageNumber"
     >
     </el-pagination>
     <div>
-    <el-dialog title="新增用户" width="40%" :visible.sync="addUser">
+    <el-dialog title="新增用户" width="30%" :visible.sync="addUser">
         <el-form ref="addForm" v-loading="addLoading" :rules="rules" :model="addForm"  label-width="100px">
-        <el-form-item label="登录账号" prop="loginAccount">
-            <el-input v-model="addForm.loginAccount" />
+        <el-form-item label="用户名" prop="userName">
+            <el-input v-model="addForm.userName" />
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
-            <el-input v-model="addForm.phone" />
+        <el-form-item label="密码" prop="password">
+            <el-input v-model="addForm.password" />
         </el-form-item>
-        <el-form-item label="昵称" prop="nickName">
-            <el-input v-model="addForm.nickName" />
+        <el-form-item label="医生编码" prop="userCode">
+            <el-input v-model="addForm.userCode" />
         </el-form-item>
-        <el-form-item label="性别" prop="sex">
+        <!-- <el-form-item label="启用/禁用" prop="status">
             <template>
-                <el-radio v-model="addForm.sex" label="1">男</el-radio>
-                <el-radio v-model="addForm.sex" label="0">女</el-radio>
+                <el-radio v-model="addForm.status" label="1">启用</el-radio>
+                <el-radio v-model="addForm.status" label="0">禁用</el-radio>
             </template>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-            <el-input v-model="addForm.email" />
-        </el-form-item>
+        </el-form-item> -->
+        <template>
+          <span class="dialog-footer">
+            <el-button @click="addUser = false"  size="mini">取 消</el-button>
+            <el-button type="primary" @click="addSubmit()"  size="mini">确 定</el-button>
+          </span>
+        </template>
       </el-form>
     </el-dialog>
     </div>
@@ -86,16 +88,32 @@
 </template>
 
 <script>
+import { userList,userSave,statistic } from "@/api/user";
 export default {
   data() {
     return {
         addLoading:false,
-        rules:{},
-      addForm:{},
-      pageVo: { currPage: 1, pageSize: 10 },
+        rules:{
+          userName: [
+            { required: true, message: "帐号不能为空", trigger: "blur" }
+          ],
+          password: [
+            { required: true, message: "密码不能为空", trigger: "blur" }
+          ],
+        },
+      addForm:{
+        userType:'1',
+        userName:'',
+        password:'',
+        userCode:'',
+        // status:''
+      },
+      pageVo: { pageNumber: 1, pageSize: 10 },
       totalSize: 0,
       formSearch: {
-        name: "",
+        keyWord: "",
+        pageNumber: 1,
+         pageSize: 10
       },
       hospital: [1],
       viewLoading: false,
@@ -104,36 +122,66 @@ export default {
   },
   created() {},
   mounted() {
- 
+    this.getUser()
+    this.z()
   },
   methods: {
+    z(){
+      statistic({}).then(res => {
+          
+            console.log(res);
+ 
+        });
+    },
     //设置表头颜色
     headClass() {
       return "background:#eef1f6;font-weight: 500;color:#262728";
     },
     //搜索
     search() {
-      this.getHospital();
+      this.getUser();
     },
     //分页
     handleSizeChange(val) {
       this.pageVo.pageSize = val;
-      this.getHospital();
+      this.getUser();
     },
     //分页
     handleCurrentChange(val) {
-      this.pageVo.currPage = val;
-      this.getHospital();
+      this.pageVo.pageNumber = val;
+      this.getUser();
     },
-    //获取批量数据
-    handleSelectionChange(val) {
-      console.log("val", val);
-      this.checkList = val;
+    //用户列表
+    getUser(){
+
+      userList(this.formSearch).then(res => {
+          if (res.code==500) {
+            this.$message.error(res.msg);
+          }else{
+            console.log(res);
+          }
+        });
+    },
+    //新增用户
+    addSubmit(){
+      userSave(this.addForm).then(res => {
+        console.log('新增数据',res)
+        if (res.code==500) {
+          this.$message.error(res.msg);
+        }else{
+          this.$message.error('新增成功');
+          this.addUser = false
+          this.getUser()
+        }
+      });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
+.dialog-footer{
+  display: flex;
+  justify-content: flex-end;
+}
 </style>

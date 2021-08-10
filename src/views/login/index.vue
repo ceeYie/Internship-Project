@@ -11,13 +11,9 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
           v-model="loginForm.username"
           placeholder="帐号"
-          name="username"
           type="text"
-          tabindex="1"
-          autocomplete="on"
         />
       </el-form-item>
 
@@ -27,12 +23,9 @@
             <svg-icon icon-class="password" />
           </span>
           <el-input
-            ref="password"
-            v-model="loginForm.password"
+            v-model="loginForm.password"  
             placeholder="密码"
-            name="password"
-            tabindex="2"
-            autocomplete="on"
+            type="password"
             @keyup.enter.native="handleLogin"
           />
         </el-form-item>
@@ -71,7 +64,6 @@ export default {
   },
   methods: {
     handleLogin(){
-      store.set("login",'login');
       this.$refs["loginForm"].validate(valid => {
         if (valid) {
           getToken(this.loginForm).then(res => {
@@ -81,7 +73,6 @@ export default {
               console.log(res);
               store.set("userToken",res.access_token); 
               this.$router.push({ path: "/dashboard" });
-              store.remove('login')
             }
           });
         }

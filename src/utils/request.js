@@ -10,12 +10,10 @@ const service = axios.create({
 })
 
 let tonke = store.get('userToken')
-let login = store.get('login')
-console.log('login',login)
 service.interceptors.request.use(
   config => {
     if(tonke){
-      config.headers['Authorization'] =  tonke
+      config.headers['Authorization'] = 'bearer '+tonke
     }else{
       config.headers['Authorization'] = 'Basic QVNQMDAwMTpBU1AwMDAx'
     }
