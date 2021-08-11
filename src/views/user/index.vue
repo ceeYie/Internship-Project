@@ -60,8 +60,8 @@
         </el-table-column>
       <el-table-column label="操作" width="290" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="pawRow(scope.row)">修改密码</el-button>
-          <el-button type="danger" size="mini" @click="del(scope.row)">删除</el-button>
+          <el-button type="primary" class="el-icon-remove" size="mini" @click="pawRow(scope.row)"></el-button>
+          <el-button type="danger" class="el-icon-delete" size="mini" @click="del(scope.row)"></el-button>
         </template>
       </el-table-column>
     </el-table>

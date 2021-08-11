@@ -38,6 +38,7 @@
 <script>
 import { getToken } from "@/api/login";
 import store from '@/utils/auth'
+import axios from "axios";
 export default {
   name: 'Login',
   data() {
@@ -75,6 +76,16 @@ export default {
               this.$router.push({ path: "/dashboard" });
             }
           });
+
+          // let url = process.env.VUE_APP_BASE_API;
+          // axios({
+          //   method: "get",
+          //   url:url + "/auth/oauth/token?grant_type=password",
+          //   headers: { Authorization: "Basic " + 'QVNQMDAwMTpBU1AwMDAx'},
+          // }).then((res) => {
+          //   store.set("userToken",res.access_token); 
+          //   this.$router.push({ path: "/dashboard" });
+          // });
         }
       });
     }

@@ -1,388 +1,212 @@
 <template>
-  <div class="container">
+  <div class="containers">
     <!-- 左边 -->
-    <div class="left">
-      <!-- 数据覆盖情况 -->
-      <div class="datacover">
-        <div class="title">
-          <span class="line" />
-          数据覆盖情况
-        </div>
-        <div class="main clearfix">
-          <div class="chart">
-            <div class="chart-label">
-              <div class="coverage-num">
-                {{
+    <div class="arts1">
+      <div style="padding: 20px">
+        <span style="color: #21b295">|</span> 数据覆盖情况
+      </div>
+      <div class="content">
+        <div>
+          <div ref="coverChart" style="width: 300px; height: 300px" />
+          <div class="cover">
+            <div>{{
                   this.percentageCompute(
                     this.result.coverage.uploadCount,
                     this.result.coverage.projectCount
                   )
-                }}
+                }}</div>
+            <div>覆盖率</div>
+          </div>
+        </div>
+        <div>
+          <div class="content_planning">
+            <div>
+              <div class="icon">
+                <i class="el-icon-s-operation" style="color: #39b99c" />
               </div>
-              <div class="coverage">覆盖率</div>
             </div>
-            <div ref="coverChart" class="coverChart" />
+            <div>
+              <div style="font-weight: 600">
+                {{ isEmpty(result.coverage.projectCount) }}
+              </div>
+              <div style="font-size: 13px; color: #bbbbbb">规划数</div>
+            </div>
           </div>
 
-          <div class="sidebar">
-            <div class="spaner">
-              <div class="icon" style="background-color: rgb(188, 235, 225)">
-                <i
-                  class="el-icon-s-operation"
-                  style="color: rgb(33, 178, 149)"
-                />
-              </div>
-              <div class="data">
-                <div class="number">
-                  {{ isEmpty(result.coverage.projectCount) }}
-                </div>
-                <div class="label">规划数</div>
+          <div class="content_planning">
+            <div>
+              <div class="icon">
+                <i class="el-icon-upload2" style="color: #39b99c" />
               </div>
             </div>
-            <div class="spaner">
-              <div class="icon" style="background-color: rgb(33, 178, 149)">
-                <i class="el-icon-upload2" style="color: #fff" />
+            <div class="shangChuan">
+              <div style="font-weight: 600">
+                {{ isEmpty(result.coverage.uploadCount) }}
               </div>
-              <div class="data">
-                <div class="number">
-                  {{ isEmpty(result.coverage.uploadCount) }}
-                </div>
-                <div class="label">上传数</div>
-              </div>
+              <div style="font-size: 13px; color: #bbbbbb">上传数</div>
             </div>
           </div>
         </div>
       </div>
-      <!-- 数据上传情况 -->
-      <div class="dataupload">
-        <div class="title">
-          <span class="line" />
-          数据上传情况
-        </div>
-        <div class="main clearfix">
-          <div class="chart">
-            <div class="chart-label">
-              <div class="coverage-num">
-                {{
+
+      <div style="padding: 20px">
+        <span style="color: #21b295">|</span> 数据上传情况
+      </div>
+      <div class="content">
+        <div>
+          <div ref="dataCheckChart1" style="width: 300px; height: 300px" />
+          <div class="cover">
+            <div>{{
                   this.percentageCompute(
                     this.result.upload.uploadSuccess,
                     this.result.upload.uploadCount
                   )
-                }}
+                }}</div>
+            <div>上传成功率</div>
+          </div>
+        </div>
+        <div>
+          <div class="content_planning">
+            <div>
+              <div class="icon">
+                <i class="el-icon-coin" style="color: #39b99c" />
               </div>
-              <div class="coverage">上传成功率</div>
             </div>
-            <div ref="uploadChart" class="uploadChart" />
+            <div>
+              <div style="font-weight: 600">
+                {{ isEmpty(result.upload.uploadCount) }}
+              </div>
+              <div style="font-size: 13px; color: #bbbbbb">上传数量</div>
+            </div>
           </div>
 
-          <div class="sidebar">
-            <div class="spaner">
-              <div class="icon" style="background-color: rgb(200, 218, 254)">
-                <i class="el-icon-coin" style="color: rgb(75, 131, 254)" />
-              </div>
-              <div class="data">
-                <div class="number">
-                  {{ isEmpty(result.upload.uploadCount) }}
-                </div>
-                <div class="label">上传数据量</div>
+          <div class="content_planning">
+            <div>
+              <div class="icon">
+                <i class="el-icon-s-data" style="color: #39b99c" />
               </div>
             </div>
-            <div class="spaner">
-              <div class="icon" style="background-color: rgb(75, 131, 254)">
-                <i class="el-icon-s-data" style="color: #fff" />
+            <div class="shangChuan">
+              <div style="font-weight: 600">
+                {{ isEmpty(result.upload.uploadSuccess) }}
               </div>
-              <div class="data">
-                <div class="number">
-                  {{ isEmpty(result.upload.uploadSuccess) }}
-                </div>
-                <div class="label">上传成功数</div>
-              </div>
+              <div style="font-size: 13px; color: #bbbbbb">上传成功数</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- 右边 -->
-    <div class="right">
-      <!-- 右边环形图 -->
-      <div class="datacheck-top">
-        <div class="title">
-          <span class="line" />
-          数据质量校验情况
+
+    <div class="arts2">
+      <div>
+        <div style="padding: 20px">
+          <span style="color: #21b295">|</span> 数据质量校验情况
         </div>
-        <div class="main clearfix">
-          <div class="chart">
-            <div class="chart-label">
-              <div class="coverage-num">
-                {{
+        <div class="content">
+          <div>
+            <div ref="uploadChart" style="width: 300px; height: 300px" />
+            <div class="cover">
+            <div>{{
                   this.percentageCompute(
                     this.result.overview[0].success,
                     this.result.overview[0].total
                   )
-                }}
-              </div>
-              <div class="coverage">正确率</div>
-            </div>
-            <div ref="dataCheckChart1" class="dataCheckChart1" />
+                }}</div>
+            <div>正确率</div>
           </div>
-
-          <div class="sidebar">
-            <div class="spaner">
-              <div class="icon" style="background-color: rgb(188, 235, 225)">
-                <i
-                  class="el-icon-edit-outline"
-                  style="color: rgb(33, 178, 149)"
-                />
+          </div>
+          <div>
+            <div class="content_planning">
+              <div>
+                <div class="icon">
+                  <i class="el-icon-coin" style="color: #39b99c" />
+                </div>
               </div>
-              <div class="data">
-                <div class="number">
+              <div>
+                <div style="font-weight: 600">
                   {{ isEmpty(result.overview[0].total) }}
                 </div>
-                <div class="label">总记录数</div>
+                <div style="font-size: 13px; color: #bbbbbb">总记录数</div>
               </div>
             </div>
-            <div class="spaner">
-              <div class="icon" style="background-color: rgb(33, 178, 149)">
-                <i class="el-icon-document-checked" style="color: #fff" />
+
+            <div class="content_planning">
+              <div>
+                <div class="icon">
+                  <i class="el-icon-document-checked" style="color: #39b99c" />
+                </div>
               </div>
-              <div class="data">
-                <div class="number">
+              <div class="shangChuan">
+                <div style="font-weight: 600">
                   {{ isEmpty(result.overview[0].success) }}
                 </div>
-                <div class="label">正确记录数</div>
+                <div style="font-size: 13px; color: #bbbbbb">正确记录数</div>
               </div>
             </div>
-            <div class="spaner">
-              <div class="icon" style="background-color: rgb(75, 131, 254)">
-                <i class="el-icon-document-delete" style="color: #fff" />
-              </div>
-              <div class="data">
-                <div class="number">
-                  {{ isEmpty(result.overview[0].error) }}
+
+            <div class="content_planning">
+              <div>
+                <div class="icon">
+                  <i class="el-icon-document-delete" style="color: #39b99c" />
                 </div>
-                <div class="label">错误记录数</div>
+              </div>
+              <div class="shangChuan">
+                <div style="font-weight: 600">
+                 {{ isEmpty(result.overview[0].error) }}
+                </div>
+                <div style="font-size: 13px; color: #bbbbbb">错误记录数</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- 右边柱状图 -->
-      <div ref="datacheckbottom" class="datacheck-bottom" />
+      <div>
+        <div ref="datacheckbottom" style="width: 100%; height: 500px" />
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.clearfix::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.title {
-  font-size: 18px;
-  margin-top: 15px;
-  margin-left: 15px;
-  .line {
-    display: inline-block;
-    border: 2px solid rgb(33, 178, 149);
-    margin-right: 10px;
-    height: 20px;
-    border-radius: 20%;
-    margin-bottom: -2.5px;
-  }
-}
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 150px;
-  height: 400px;
-  float: right;
-  margin-right: 16%;
-  .spaner {
-    width: 150px;
-    height: 150px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    .icon {
-      background-color: rgb(188, 235, 225);
-      color: rgb(33, 178, 149);
-      border-radius: 20%;
-      width: 50px;
-      height: 50px;
-      float: left;
-      font-size: 45px;
-      text-align: center;
-      line-height: 50px;
-    }
-    .data {
-      display: flex;
-      flex-direction: column;
-      width: 80px;
-      float: right;
-      text-align: center;
-      .number {
-        font-weight: bold;
-        color: #333333;
-        font-size: 28px;
-        text-align: center;
-      }
-      .label {
-        font-size: 14px;
-        color: #696969;
-      }
-    }
-  }
-}
-.container {
+.containers {
+  padding: 10px;
   background-color: #e4edea;
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin: -23.5px -5px;
-  .left {
-    float: left;
-    width: 550px;
-    height: 900px;
-    display: flex;
-    flex-direction: column;
-    .datacover {
-      margin-top: 25px;
-      margin-bottom: 25px;
-      width: 650px;
-      height: 400px;
-      background-color: #fff;
-      .chart {
-        float: left;
-        width: 380px;
-        height: 380px;
-        position: relative;
-        .chart-label {
-          position: absolute;
-          width: 100px;
-          height: 100px;
-          margin-top: -50px;
-          margin-left: -50px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          top: 50%;
-          left: 50%;
-          .coverage-num {
-            font-size: 40px;
-            font-weight: bold;
-            color: rgb(33, 178, 149);
-            text-align: center;
-            line-height: 40px;
-          }
-          .coverage {
-            line-height: 20px;
-            text-align: center;
-            color: #696969;
-          }
-        }
-        .coverChart {
-          width: 380px;
-          height: 380px;
-        }
-      }
-    }
-    .dataupload {
-      width: 650px;
-      height: 400px;
-      background-color: #fff;
-      .chart {
-        float: left;
-        width: 380px;
-        height: 380px;
-        position: relative;
-        .chart-label {
-          position: absolute;
-          width: 100px;
-          height: 100px;
-          margin-top: -50px;
-          margin-left: -50px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          top: 50%;
-          left: 50%;
-          .coverage-num {
-            font-size: 40px;
-            font-weight: bold;
-            color: rgb(75, 131, 254);
-            text-align: center;
-            line-height: 40px;
-          }
-          .coverage {
-            line-height: 20px;
-            text-align: center;
-            color: #696969;
-          }
-        }
-        .uploadChart {
-          width: 380px;
-          height: 380px;
-        }
-      }
-    }
+  justify-content: space-between;
+  .cover{
+    position: relative;
+    left: 111px;
+    top: -165px;
+    text-align: center;
+    width: 86px;
   }
-  .right {
-    // float: right;
+  .arts1 {
+    background-color: white;
+    flex: 4;
+  }
+  .arts2 {
+    background-color: white;
+    flex: 6;
+    margin-left: 10px;
+  }
+  .content {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: #fff;
-    height: 825px;
-    margin-top: 25px;
-    width: 900px;
-    .datacheck-top {
-      width: 900px;
-      height: 400px;
-      .sidebar {
-        margin-right: 30%;
-      }
-      .chart {
-        float: left;
-        width: 380px;
-        height: 380px;
-        position: relative;
-        .chart-label {
-          position: absolute;
-          width: 100px;
-          height: 100px;
-          margin-top: -50px;
-          margin-left: -50px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          top: 50%;
-          left: 50%;
-          .coverage-num {
-            font-size: 40px;
-            font-weight: bold;
-            color: rgb(33, 178, 149);
-            text-align: center;
-            line-height: 40px;
-          }
-          .coverage {
-            line-height: 20px;
-            text-align: center;
-            color: #696969;
-          }
-        }
-        .dataCheckChart1 {
-          width: 380px;
-          height: 380px;
-        }
-      }
-    }
-    .datacheck-bottom {
-      width: 900px;
-      height: 400px;
-      margin-top: -60px;
+    align-items: center;
+  }
+  .icon {
+    background-color: #bcebe1;
+    width: 40px;
+    height: 40px;
+    border-radius: 7px;
+    text-align: center;
+    line-height: 40px;
+  }
+  .content_planning {
+    padding: 30px;
+    display: flex;
+    text-align: center;
+    div:nth-child(2) {
+      padding-left: 10px;
     }
   }
 }
@@ -417,7 +241,6 @@ export default {
   },
   created() {
     this.getTableData();
-    
   },
   mounted() {
     this.getTable();
@@ -434,7 +257,7 @@ export default {
     getTableData() {
       getData().then((res) => {
         this.result = res.result;
-        this.getTable()
+        this.getTable();
       });
     },
     // 数据覆盖情况环形图

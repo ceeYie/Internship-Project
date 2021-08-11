@@ -79,11 +79,8 @@
           <el-table-column label="表名">
             <template slot-scope="scope">{{ scope.row.table_name }}</template>
           </el-table-column>
-          <el-table-column label="表字段1">
+          <el-table-column label="表中文名">
             <template slot-scope="scope">{{ scope.row.table_cn }}</template>
-          </el-table-column>
-          <el-table-column label="上传成功标识">
-            <template slot-scope="scope"></template>
           </el-table-column>
           <el-table-column label="批次号">
             <template slot-scope="scope">{{ scope.row.batch_no }}</template>
@@ -101,11 +98,11 @@
           :current-page="pageVo.pageNumber"
           :page-sizes="[10, 20, 50, 100]"
           :page-size="pageVo.pageSize"
-          :total="totalSize"
+          :total="totalSize1"
           layout="total, sizes, prev, pager, next, jumper"
           style="margin-top: 20px"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange1"
+          @current-change="handleCurrentChange1"
         />
       </el-dialog>
       <!-- 摘要详情 -->
@@ -168,6 +165,7 @@ export default {
       showAbstract:false,
       pageVo: { pageNumber: 1, pageSize: 10 },
       totalSize: 0,
+      totalSize1:0,
       formSearch: {
         batchNo:''
       },
@@ -175,7 +173,8 @@ export default {
       hospital: [],
       viewLoading: false,
       abnormalList:[],
-      abstractList:[]
+      abstractList:[],
+      different:{}
     };
   },
   created() {},
@@ -201,9 +200,12 @@ export default {
     },
     //异常列表
     abnormal(i){
+      if (i) {
+        this.different = i
+      }
       let data = {
-        tableName:i.table_name,
-        batchNo:i.batch_no
+        tableName:this.different.table_name,
+        batchNo:this.different.batch_no
       }
       data.pageNumber = this.pageVo.pageNumber;
       data.pageSize = this.pageVo.pageSize;
@@ -212,7 +214,8 @@ export default {
             this.$message.error(res.msg);
           }else{
             console.log(res); 
-            this.abnormalList = res.result
+            this.abnormalList = res.result.pageList
+            this.totalSize1 = res.result.pageTotals
             this.dialogVisible = true
           }
       });
@@ -234,8 +237,8 @@ export default {
             this.$message.error(res.msg);
           }else{
             console.log(res); 
-            this.hospital = res.result
-            this.totalSize = Number(res.total)
+            this.hospital = res.result.pagelist
+            this.totalSize = res.result.pagetotals
           }
       });
     },
@@ -253,17 +256,27 @@ export default {
       this.pageVo.currPage = val;
       this.getHospital();
     },
+
+    //异常列表分页
+    handleSizeChange1(val) {
+      this.pageVo.pageSize = val;
+      this.abnormal();
+    },
+    //异常列表分页
+    handleCurrentChange1(val) {
+      this.pageVo.currPage = val;
+      this.abnormal();
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .errey{
-  background-color: #f8f8f8;
   margin-bottom: 15px;
   display: flex;
   div:nth-child(1){
-    flex: 0.1;
+    flex: 0.3;
   }
   div:nth-child(2){
     flex: 1;
