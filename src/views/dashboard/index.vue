@@ -12,7 +12,12 @@
           <div class="chart">
             <div class="chart-label">
               <div class="coverage-num">
-                {{ this.percentageCompute(this.coverage.uploadCount, this.coverage.projectCount, this.coveragePecentage) }}
+                {{
+                  this.percentageCompute(
+                    this.result.coverage.uploadCount,
+                    this.result.coverage.projectCount
+                  )
+                }}
               </div>
               <div class="coverage">覆盖率</div>
             </div>
@@ -28,7 +33,9 @@
                 />
               </div>
               <div class="data">
-                <div class="number">{{ coverage.projectCount }}</div>
+                <div class="number">
+                  {{ isEmpty(result.coverage.projectCount) }}
+                </div>
                 <div class="label">规划数</div>
               </div>
             </div>
@@ -37,7 +44,9 @@
                 <i class="el-icon-upload2" style="color: #fff" />
               </div>
               <div class="data">
-                <div class="number">{{ coverage.uploadCount }}</div>
+                <div class="number">
+                  {{ isEmpty(result.coverage.uploadCount) }}
+                </div>
                 <div class="label">上传数</div>
               </div>
             </div>
@@ -54,7 +63,12 @@
           <div class="chart">
             <div class="chart-label">
               <div class="coverage-num">
-                {{this.percentageCompute(this.upload.uploadSuccess, this.upload.uploadCount, this.uploadPecentage)}}
+                {{
+                  this.percentageCompute(
+                    this.result.upload.uploadSuccess,
+                    this.result.upload.uploadCount
+                  )
+                }}
               </div>
               <div class="coverage">上传成功率</div>
             </div>
@@ -67,7 +81,9 @@
                 <i class="el-icon-coin" style="color: rgb(75, 131, 254)" />
               </div>
               <div class="data">
-                <div class="number">{{ upload.uploadCount }}</div>
+                <div class="number">
+                  {{ isEmpty(result.upload.uploadCount) }}
+                </div>
                 <div class="label">上传数据量</div>
               </div>
             </div>
@@ -76,7 +92,9 @@
                 <i class="el-icon-s-data" style="color: #fff" />
               </div>
               <div class="data">
-                <div class="number">{{ upload.uploadSuccess }}</div>
+                <div class="number">
+                  {{ isEmpty(result.upload.uploadSuccess) }}
+                </div>
                 <div class="label">上传成功数</div>
               </div>
             </div>
@@ -96,7 +114,12 @@
           <div class="chart">
             <div class="chart-label">
               <div class="coverage-num">
-                {{this.percentageCompute(this.overview[0].success, this.overview[0].total, this.overviewPecentage)}}
+                {{
+                  this.percentageCompute(
+                    this.result.overview[0].success,
+                    this.result.overview[0].total
+                  )
+                }}
               </div>
               <div class="coverage">正确率</div>
             </div>
@@ -112,7 +135,9 @@
                 />
               </div>
               <div class="data">
-                <div class="number">{{ overview[0].total }}</div>
+                <div class="number">
+                  {{ isEmpty(result.overview[0].total) }}
+                </div>
                 <div class="label">总记录数</div>
               </div>
             </div>
@@ -121,7 +146,9 @@
                 <i class="el-icon-document-checked" style="color: #fff" />
               </div>
               <div class="data">
-                <div class="number">{{ overview[0].success }}</div>
+                <div class="number">
+                  {{ isEmpty(result.overview[0].success) }}
+                </div>
                 <div class="label">正确记录数</div>
               </div>
             </div>
@@ -130,7 +157,9 @@
                 <i class="el-icon-document-delete" style="color: #fff" />
               </div>
               <div class="data">
-                <div class="number">{{ overview[0].error }}</div>
+                <div class="number">
+                  {{ isEmpty(result.overview[0].error) }}
+                </div>
                 <div class="label">错误记录数</div>
               </div>
             </div>
@@ -363,47 +392,51 @@
 import { getData } from "@/api/dashboard";
 export default {
   name: "Dashboard",
-
   data() {
     return {
-      coverage: {
-        projectCount: "",
-        uploadCount: "",
-      },
-      overview: [
-        {
-          total: "",
-          success: "",
-          error: "",
+      result: {
+        coverage: {
+          projectCount: "0",
+          uploadCount: "0",
         },
-      ],
-      upload: {
-        uploadCount: "",
-        uploadSuccess: "",
+        overview: [
+          {
+            total: "0",
+            success: "0",
+            error: "0",
+          },
+        ],
+        upload: {
+          uploadCount: "0",
+          uploadSuccess: "0",
+        },
+        tableDetails: [],
       },
-      tableDetails: [],
       source: [],
-      status: "",
-      coveragePecentage:'',
-      uploadPecentage:'',
-      overviewPecentage:''
     };
   },
   created() {
-    getData().then((res) => {
-      this.coverage = res.result.coverage;
-      this.overview = res.result.overview;
-      this.upload = res.result.upload;
-      this.tableDetails = res.result.tableDetails;
-      this.status = res.status;
+    this.getTableData();
+    
+  },
+  mounted() {
+    this.getTable();
+  },
+  methods: {
+    // 获取统计图
+    getTable() {
       this.coverChart();
       this.uploadChart();
       this.dataCheckChart1();
       this.dataCheckBottom();
-    });
-  },
-  mounted() {},
-  methods: {
+    },
+    // 获取数据质量统计数据
+    getTableData() {
+      getData().then((res) => {
+        this.result = res.result;
+        this.getTable()
+      });
+    },
     // 数据覆盖情况环形图
     coverChart() {
       // 基于准备好的dom，初始化echarts实例
@@ -453,7 +486,7 @@ export default {
             },
             data: [
               {
-                value: this.coverage.projectCount,
+                value: this.isEmpty(this.result.upload.uploadSuccess),
                 name: "规划数",
                 itemStyle: {
                   normal: { color: "rgb(188,235,225)" },
@@ -461,7 +494,7 @@ export default {
                 },
               },
               {
-                value: this.coverage.uploadCount,
+                value: this.isEmpty(this.result.coverage.uploadCount),
                 name: "上传数",
                 itemStyle: {
                   normal: { color: "rgb(33,178,149)" },
@@ -521,7 +554,7 @@ export default {
             },
             data: [
               {
-                value: this.upload.uploadCount,
+                value: this.isEmpty(this.result.upload.uploadCount),
                 name: "上传数据量",
                 itemStyle: {
                   normal: { color: "rgb(200,218,254)" },
@@ -529,7 +562,7 @@ export default {
                 },
               },
               {
-                value: this.upload.uploadSuccess,
+                value: this.isEmpty(this.result.upload.uploadSuccess),
                 name: "上传成功数",
                 itemStyle: {
                   normal: { color: "rgb(75,131,254)" },
@@ -588,7 +621,7 @@ export default {
             },
             data: [
               {
-                value: this.overview[0].total,
+                value: this.isEmpty(this.result.overview[0].total),
                 name: "总记录数",
                 itemStyle: {
                   normal: { color: "rgb(33,178,149)" },
@@ -596,16 +629,8 @@ export default {
                 },
               },
               {
-                value: this.overview[0].success,
+                value: this.isEmpty(this.result.overview[0].success),
                 name: "正确记录数",
-                itemStyle: {
-                  normal: { color: "rgb(75,131,254)" },
-                  emphasis: { color: "rgb(75,131,254)" },
-                },
-              },
-              {
-                value: this.overview.error,
-                name: "错误记录数",
                 itemStyle: {
                   normal: { color: "rgb(75,131,254)" },
                   emphasis: { color: "rgb(75,131,254)" },
@@ -618,7 +643,7 @@ export default {
     },
     // 数据质量校验情况柱状图
     dataCheckBottom() {
-      this.dataFilter(this.tableDetails);
+      this.dataFilter(this.result.tableDetails);
       const dataCheckBottom = this.$echarts.init(this.$refs.datacheckbottom);
       dataCheckBottom.setOption({
         legend: {
@@ -663,15 +688,19 @@ export default {
       this.source.unshift(["check", "right", "wrong"]);
     },
     // 计算百分比
-    percentageCompute(numerator, denominator, outcome){
-      let data = Math.round(numerator / denominator * 100)
-      if(data){
-        outcome = data + '%'
+    percentageCompute(numerator, denominator) {
+      let data = Math.round((numerator / denominator) * 100);
+
+      if (data) {
+        return data + "%";
       } else {
-        outcome = 0 + '%'
+        return 0 + "%";
       }
-      return outcome
-    } 
+    },
+    // 判断数值是否为空
+    isEmpty(data) {
+      return data === "" ? 0 : data;
+    },
   },
 };
 </script>
