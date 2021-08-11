@@ -17,10 +17,28 @@ export function userSave(data) {
     })
 }
 
-//新增用户
-export function statistic(data) {
+//修改密码
+export function updatePwd(data) {
     return request({
-      url: `/dst/validate/statistic`,
+      url: `/dst/user/updatePwd`,
+      method: 'post',
+      data:data
+    })
+}
+
+//删除用户
+export function userDelete(data) {
+    return request({
+      url: `/dst/user/delete`,
+      method: 'post',
+      data:data
+    })
+}
+
+//启用禁用
+export function updateStatus(data) {
+    return request({
+      url: `/dst/user/updateStatus`,
       method: 'post',
       data:data
     })

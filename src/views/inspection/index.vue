@@ -7,21 +7,8 @@
         :model="formSearch"
         class="demo-form-inline"
       >
-        <el-form-item label="校验时间" prop="startTime">
-          <el-date-picker
-            v-model="formSearch.startTime"
-            type="datetime"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="开始时间"
-          />
-        </el-form-item>
-        <el-form-item label="—" prop="endTime">
-          <el-date-picker
-            v-model="formSearch.endTime"
-            type="datetime"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="结束时间"
-          />
+        <el-form-item label="批次号" prop="batchNo">
+          <el-input v-model="formSearch.batchNo" placeholder="请输入批次号" clearable/>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -38,88 +25,95 @@
     </div>
     <el-table
       :data="hospital"
-      @selection-change="handleSelectionChange"
       style="width: 100%"
       :header-cell-style="headClass"
       v-loading="viewLoading"
     >
       <el-table-column label="序号">
-        <template slot-scope="scope">{{ scope.row.orgname }}</template>
+        <template slot-scope="scope">{{ scope.$index+1 }}</template>
       </el-table-column>
       <el-table-column label="表名">
-        <template slot-scope="scope">{{ scope.row.orgcode }}</template>
+        <template slot-scope="scope">{{ scope.row.table_name }}</template>
       </el-table-column>
       <el-table-column label="表中文名">
-        <template slot-scope="scope">{{ scope.row.creater }}</template>
+        <template slot-scope="scope">{{ scope.row.table_cn }}</template>
       </el-table-column>
       <el-table-column label="批次号">
-        <template slot-scope="scope">{{ scope.row.create_time }}</template>
+        <template slot-scope="scope">{{ scope.row.batch_no }}</template>
       </el-table-column>
       <el-table-column label="总数量">
-        <template slot-scope="scope">{{ scope.row.expiry_time }}</template>
+        <template slot-scope="scope">{{ scope.row.total }}</template>
       </el-table-column>
       <el-table-column label="正确数量">
-        <template slot-scope="scope">{{ scope.row.expiry_time }}</template>
+        <template slot-scope="scope">{{ scope.row.success }}</template>
       </el-table-column>
       <el-table-column label="异常数据数">
-        <template slot-scope="scope">{{ scope.row.expiry_time }}</template>
+        <template slot-scope="scope">
+          <span v-if="scope.row.error>0" style="color:red;border-bottom: 1px solid red;cursor: pointer" @click="abnormal(scope.row)">{{ scope.row.error }}</span>
+          <span v-else>0</span>
+        </template>
       </el-table-column>
     </el-table>
-    <el-pagination
+      <el-pagination
+      :current-page="pageVo.pageNumber"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="pageVo.pageSize"
+      :total="totalSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      style="margin-top: 20px"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :page-size="100"
-      layout="total, prev, pager, next"
-      :total="pageVo.currPage"
-    >
-    </el-pagination>
+    />
     <!-- 弹窗管理 -->
     <div>
       <el-dialog title="异常信息" width="80%" :visible.sync="dialogVisible">
         <el-table
-          :data="hospital"
-          @selection-change="handleSelectionChange"
+          :data="abnormalList"
           style="width: 100%"
           :header-cell-style="headClass"
           v-loading="viewLoading"
         >
           <el-table-column label="序号">
-            <template slot-scope="scope">{{ scope.row.orgname }}</template>
+            <template slot-scope="scope">{{ scope.$index+1 }}</template>
           </el-table-column>
           <el-table-column label="表名">
-            <template slot-scope="scope">{{ scope.row.orgcode }}</template>
+            <template slot-scope="scope">{{ scope.row.table_name }}</template>
           </el-table-column>
           <el-table-column label="表字段1">
-            <template slot-scope="scope">{{ scope.row.creater }}</template>
+            <template slot-scope="scope">{{ scope.row.table_cn }}</template>
           </el-table-column>
           <el-table-column label="上传成功标识">
-            <template slot-scope="scope">{{ scope.row.create_time }}</template>
+            <template slot-scope="scope"></template>
           </el-table-column>
           <el-table-column label="批次号">
-            <template slot-scope="scope">{{ scope.row.expiry_time }}</template>
+            <template slot-scope="scope">{{ scope.row.batch_no }}</template>
           </el-table-column>
           <el-table-column label="原始数据">
-            <template slot-scope="scope">{{ scope.row.expiry_time }}</template>
+            <template slot-scope="scope">详细</template>
           </el-table-column>
           <el-table-column label="摘要信息" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini" class="el-icon-info">详情</el-button>
+              <el-button type="primary" size="mini" class="el-icon-info" @click="abnormalDetails(scope.row)">详情</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
+          <el-pagination
+          :current-page="pageVo.pageNumber"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="pageVo.pageSize"
+          :total="totalSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          style="margin-top: 20px"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :page-size="100"
-          layout="total, prev, pager, next"
-          :total="pageVo.currPage"
-        >
-        </el-pagination>
+        />
       </el-dialog>
       <!-- 摘要详情 -->
-      <el-dialog title="摘要信息" width="50%" :visible.sync="dialogVisible">
-        <div style="  background-color: #f8f8f8;margin-bottom: 15px;">
-          <div class="atDetails">
+      <el-dialog title="摘要信息" width="50%" :visible.sync="showAbstract">
+        <div class="errey" v-for="(item,index) in abstractList" :key="item.id">
+          <div>序号：{{index+1}}</div>
+          <div>错误描述：{{item.error}}</div>
+          <!-- <div class="atDetails">
             <div class="atDetails_content">
               <div>
                 <i class="el-icon-key"></i>
@@ -158,7 +152,7 @@
               </div>
               <div>112312</div>
             </div>
-          </div>
+          </div> -->
         </div>
       </el-dialog>
     </div>
@@ -166,26 +160,63 @@
 </template>
 
 <script>
+import { validateReport,errorTable,validateErrors} from "@/api/validate";
 export default {
   data() {
     return {
       dialogVisible: false,
-      pageVo: { currPage: 1, pageSize: 10 },
+      showAbstract:false,
+      pageVo: { pageNumber: 1, pageSize: 10 },
       totalSize: 0,
       formSearch: {
-        startTime: "",
-        endTime: "",
+        batchNo:''
       },
       roleShow: false,
-      hospital: [1],
+      hospital: [],
       viewLoading: false,
+      abnormalList:[],
+      abstractList:[]
     };
   },
   created() {},
   mounted() {
-    //this.getHospital()
+    this.getHospital()
   },
   methods: {
+    //异常详情
+    abnormalDetails(i){
+      let data = {
+        tableName:i.table_name,
+        batchNo:i.batch_no
+      }
+      validateErrors(data).then(res => {
+          if (res.code==500) {
+            this.$message.error(res.msg);
+          }else{
+            console.log(res); 
+            this.abstractList = res.result
+            this.showAbstract = true
+          }
+      });
+    },
+    //异常列表
+    abnormal(i){
+      let data = {
+        tableName:i.table_name,
+        batchNo:i.batch_no
+      }
+      data.pageNumber = this.pageVo.pageNumber;
+      data.pageSize = this.pageVo.pageSize;
+      errorTable(data).then(res => {
+          if (res.code==500) {
+            this.$message.error(res.msg);
+          }else{
+            console.log(res); 
+            this.abnormalList = res.result
+            this.dialogVisible = true
+          }
+      });
+    },
     //新增医院
     hospitaladd() {
       this.$router.push({ path: "/hospitaladd" });
@@ -196,8 +227,17 @@ export default {
     },
     //查询医院列表
     getHospital() {
-      this.viewLoading = true;
-     
+      this.formSearch.pageNumber = this.pageVo.pageNumber;
+      this.formSearch.pageSize = this.pageVo.pageSize;
+      validateReport(this.formSearch).then(res => {
+          if (res.code==500) {
+            this.$message.error(res.msg);
+          }else{
+            console.log(res); 
+            this.hospital = res.result
+            this.totalSize = Number(res.total)
+          }
+      });
     },
     //搜索
     search() {
@@ -213,16 +253,22 @@ export default {
       this.pageVo.currPage = val;
       this.getHospital();
     },
-    //获取批量数据
-    handleSelectionChange(val) {
-      console.log("val", val);
-      this.checkList = val;
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.errey{
+  background-color: #f8f8f8;
+  margin-bottom: 15px;
+  display: flex;
+  div:nth-child(1){
+    flex: 0.1;
+  }
+  div:nth-child(2){
+    flex: 1;
+  }
+}
 .atDetails {
   display: flex;
   margin-bottom: 10px;

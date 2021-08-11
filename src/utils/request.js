@@ -1,8 +1,7 @@
 import axios from 'axios'
 import {  Message } from 'element-ui'
 import store from '@/utils/auth'
-
-
+import router from '../router'
 // create an axios instance
 const service = axios.create({
   baseURL: 'api', // process.env.VUE_APP_BASE_API
@@ -12,10 +11,11 @@ const service = axios.create({
 let tonke = store.get('userToken')
 service.interceptors.request.use(
   config => {
-    if(tonke){
-      config.headers['Authorization'] = 'bearer '+tonke
-    }else{
+    console.log('config',config)
+    if(config.url==='/auth/oauth/token?grant_type=password'){
       config.headers['Authorization'] = 'Basic QVNQMDAwMTpBU1AwMDAx'
+    }else{
+      config.headers['Authorization'] = 'bearer '+tonke
     }
     config.headers['TENANT-CODE'] = 'ASP0001'
     config.headers['SERVICE'] = 'dst'

@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-
+//登录获取token
 export function getToken(data) {
   return request({
     url: `/auth/oauth/token?grant_type=password`,
@@ -7,12 +7,3 @@ export function getToken(data) {
     params:data
   })
 }
-
-
-// export function addRole(data) {
-//   return request({
-//     url: '/vue-element-admin/role',
-//     method: 'post',
-//     data
-//   })
-// }
