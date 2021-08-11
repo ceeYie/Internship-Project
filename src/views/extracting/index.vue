@@ -7,7 +7,7 @@
         :model="formSearch"
         class="demo-form-inline"
       >
-        <el-form-item label="上传时间" prop="beginTime">
+        <el-form-item label="抽取时间" prop="beginTime">
           <el-date-picker
             v-model="formSearch.beginTime"
             type="datetime"
