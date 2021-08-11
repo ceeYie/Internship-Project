@@ -11,7 +11,14 @@
         <div class="main clearfix">
           <div class="chart">
             <div class="chart-label">
-              <div class="coverage-num">40%</div>
+              <div class="coverage-num">
+                {{
+                  this.percentageCompute(
+                    this.result.coverage.uploadCount,
+                    this.result.coverage.projectCount
+                  )
+                }}
+              </div>
               <div class="coverage">覆盖率</div>
             </div>
             <div ref="coverChart" class="coverChart" />
@@ -26,7 +33,9 @@
                 />
               </div>
               <div class="data">
-                <div class="number">400</div>
+                <div class="number">
+                  {{ isEmpty(result.coverage.projectCount) }}
+                </div>
                 <div class="label">规划数</div>
               </div>
             </div>
@@ -35,7 +44,9 @@
                 <i class="el-icon-upload2" style="color: #fff" />
               </div>
               <div class="data">
-                <div class="number">20</div>
+                <div class="number">
+                  {{ isEmpty(result.coverage.uploadCount) }}
+                </div>
                 <div class="label">上传数</div>
               </div>
             </div>
@@ -51,7 +62,14 @@
         <div class="main clearfix">
           <div class="chart">
             <div class="chart-label">
-              <div class="coverage-num">40%</div>
+              <div class="coverage-num">
+                {{
+                  this.percentageCompute(
+                    this.result.upload.uploadSuccess,
+                    this.result.upload.uploadCount
+                  )
+                }}
+              </div>
               <div class="coverage">上传成功率</div>
             </div>
             <div ref="uploadChart" class="uploadChart" />
@@ -63,8 +81,10 @@
                 <i class="el-icon-coin" style="color: rgb(75, 131, 254)" />
               </div>
               <div class="data">
-                <div class="number">400</div>
-                <div class="label">规划数</div>
+                <div class="number">
+                  {{ isEmpty(result.upload.uploadCount) }}
+                </div>
+                <div class="label">上传数据量</div>
               </div>
             </div>
             <div class="spaner">
@@ -72,8 +92,10 @@
                 <i class="el-icon-s-data" style="color: #fff" />
               </div>
               <div class="data">
-                <div class="number">20</div>
-                <div class="label">上传数</div>
+                <div class="number">
+                  {{ isEmpty(result.upload.uploadSuccess) }}
+                </div>
+                <div class="label">上传成功数</div>
               </div>
             </div>
           </div>
@@ -91,8 +113,15 @@
         <div class="main clearfix">
           <div class="chart">
             <div class="chart-label">
-              <div class="coverage-num">40%</div>
-              <div class="coverage">覆盖率</div>
+              <div class="coverage-num">
+                {{
+                  this.percentageCompute(
+                    this.result.overview[0].success,
+                    this.result.overview[0].total
+                  )
+                }}
+              </div>
+              <div class="coverage">正确率</div>
             </div>
             <div ref="dataCheckChart1" class="dataCheckChart1" />
           </div>
@@ -106,7 +135,9 @@
                 />
               </div>
               <div class="data">
-                <div class="number">400</div>
+                <div class="number">
+                  {{ isEmpty(result.overview[0].total) }}
+                </div>
                 <div class="label">总记录数</div>
               </div>
             </div>
@@ -115,7 +146,9 @@
                 <i class="el-icon-document-checked" style="color: #fff" />
               </div>
               <div class="data">
-                <div class="number">400</div>
+                <div class="number">
+                  {{ isEmpty(result.overview[0].success) }}
+                </div>
                 <div class="label">正确记录数</div>
               </div>
             </div>
@@ -124,7 +157,9 @@
                 <i class="el-icon-document-delete" style="color: #fff" />
               </div>
               <div class="data">
-                <div class="number">20</div>
+                <div class="number">
+                  {{ isEmpty(result.overview[0].error) }}
+                </div>
                 <div class="label">错误记录数</div>
               </div>
             </div>
@@ -206,6 +241,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin: -23.5px -5px;
   .left {
     float: left;
     width: 550px;
@@ -291,7 +327,6 @@
           height: 380px;
         }
       }
-
     }
   }
   .right {
@@ -306,7 +341,7 @@
     .datacheck-top {
       width: 900px;
       height: 400px;
-      .sidebar{
+      .sidebar {
         margin-right: 30%;
       }
       .chart {
@@ -354,271 +389,318 @@
 </style>
 
 <script>
+import { getData } from "@/api/dashboard";
 export default {
-  name: 'Dashboard',
+  name: "Dashboard",
   data() {
-    return {}
+    return {
+      result: {
+        coverage: {
+          projectCount: "0",
+          uploadCount: "0",
+        },
+        overview: [
+          {
+            total: "0",
+            success: "0",
+            error: "0",
+          },
+        ],
+        upload: {
+          uploadCount: "0",
+          uploadSuccess: "0",
+        },
+        tableDetails: [],
+      },
+      source: [],
+    };
   },
-  computed: {},
-  created() {},
+  created() {
+    this.getTableData();
+    
+  },
   mounted() {
-    this.coverChart()
-    this.uploadChart()
-    this.dataCheckChart1()
-    this.dataCheckBottom()
+    this.getTable();
   },
   methods: {
+    // 获取统计图
+    getTable() {
+      this.coverChart();
+      this.uploadChart();
+      this.dataCheckChart1();
+      this.dataCheckBottom();
+    },
+    // 获取数据质量统计数据
+    getTableData() {
+      getData().then((res) => {
+        this.result = res.result;
+        this.getTable()
+      });
+    },
     // 数据覆盖情况环形图
     coverChart() {
       // 基于准备好的dom，初始化echarts实例
-      const coverChart = this.$echarts.init(this.$refs.coverChart)
+      const coverChart = this.$echarts.init(this.$refs.coverChart);
       // 绘制图表
       coverChart.setOption({
         tooltip: {
           show: false,
-          trigger: 'item',
+          trigger: "item",
           axisPointer: {
             label: {
               normal: {
-                show: false
+                show: false,
               },
-              emphasis: {}
-            }
-          }
+              emphasis: {},
+            },
+          },
         },
         legend: {
           show: false,
           selectorLabel: {
-            show: false
-          }
+            show: false,
+          },
         },
         series: [
           {
-            name: '数据覆盖情况',
-            type: 'pie',
-            radius: ['40%', '70%'],
+            name: "数据覆盖情况",
+            type: "pie",
+            radius: ["40%", "70%"],
             avoidLabelOverlap: false,
             hoverAnimation: false,
             legendHoverLink: false,
-            left: 'auto',
+            left: "auto",
             label: {
               show: false,
-              position: 'center'
+              position: "center",
             },
             emphasis: {
               label: {
                 show: false,
-                fontSize: '40',
-                fontWeight: 'bold'
-              }
+                fontSize: "40",
+                fontWeight: "bold",
+              },
             },
             labelLine: {
-              show: false
+              show: false,
             },
             data: [
               {
-                value: 300,
-                name: '规划数',
+                value: this.isEmpty(this.result.upload.uploadSuccess),
+                name: "规划数",
                 itemStyle: {
-                  normal: { color: 'rgb(188,235,225)' },
-                  emphasis: { color: 'rgb(188,235,225)' }
-                }
+                  normal: { color: "rgb(188,235,225)" },
+                  emphasis: { color: "rgb(188,235,225)" },
+                },
               },
               {
-                value: 20,
-                name: '上传数',
+                value: this.isEmpty(this.result.coverage.uploadCount),
+                name: "上传数",
                 itemStyle: {
-                  normal: { color: 'rgb(33,178,149)' },
-                  emphasis: { color: 'rgb(33,178,149)' }
-                }
-              }
-            ]
+                  normal: { color: "rgb(33,178,149)" },
+                  emphasis: { color: "rgb(33,178,149)" },
+                },
+              },
+            ],
             // color: ["rgb(188,235,225)", "rgb(33,178,149)"],
-          }
-        ]
-      })
+          },
+        ],
+      });
     },
     // 数据上传情况环形图
     uploadChart() {
-      const uploadChart = this.$echarts.init(this.$refs.uploadChart)
+      const uploadChart = this.$echarts.init(this.$refs.uploadChart);
       uploadChart.setOption({
         tooltip: {
           show: false,
-          trigger: 'item',
+          trigger: "item",
           axisPointer: {
             label: {
               normal: {
-                show: false
+                show: false,
               },
-              emphasis: {}
-            }
-          }
+              emphasis: {},
+            },
+          },
         },
         legend: {
           show: false,
           selectorLabel: {
-            show: false
-          }
+            show: false,
+          },
         },
         series: [
           {
-            name: '数据上传情况',
-            type: 'pie',
-            radius: ['40%', '70%'],
+            name: "数据上传情况",
+            type: "pie",
+            radius: ["40%", "70%"],
             avoidLabelOverlap: false,
             hoverAnimation: false,
             legendHoverLink: false,
-            left: 'auto',
+            left: "auto",
             label: {
               show: false,
-              position: 'center'
+              position: "center",
             },
             emphasis: {
               label: {
                 show: false,
-                fontSize: '40',
-                fontWeight: 'bold'
-              }
+                fontSize: "40",
+                fontWeight: "bold",
+              },
             },
             labelLine: {
-              show: false
+              show: false,
             },
             data: [
               {
-                value: 300,
-                name: '规划数',
+                value: this.isEmpty(this.result.upload.uploadCount),
+                name: "上传数据量",
                 itemStyle: {
-                  normal: { color: 'rgb(200,218,254)' },
-                  emphasis: { color: 'rgb(200,218,254)' }
-                }
+                  normal: { color: "rgb(200,218,254)" },
+                  emphasis: { color: "rgb(200,218,254)" },
+                },
               },
               {
-                value: 20,
-                name: '上传数',
+                value: this.isEmpty(this.result.upload.uploadSuccess),
+                name: "上传成功数",
                 itemStyle: {
-                  normal: { color: 'rgb(75,131,254)' },
-                  emphasis: { color: 'rgb(75,131,254)' }
-                }
-              }
-            ]
-          }
-        ]
-      })
+                  normal: { color: "rgb(75,131,254)" },
+                  emphasis: { color: "rgb(75,131,254)" },
+                },
+              },
+            ],
+          },
+        ],
+      });
     },
     // 数据质量校验情况环形图
     dataCheckChart1() {
-      const dataCheckChart1 = this.$echarts.init(this.$refs.dataCheckChart1)
+      const dataCheckChart1 = this.$echarts.init(this.$refs.dataCheckChart1);
       dataCheckChart1.setOption({
         tooltip: {
           show: false,
-          trigger: 'item',
+          trigger: "item",
           axisPointer: {
             label: {
               normal: {
-                show: false
+                show: false,
               },
-              emphasis: {}
-            }
-          }
+              emphasis: {},
+            },
+          },
         },
         legend: {
           show: false,
           selectorLabel: {
-            show: false
-          }
+            show: false,
+          },
         },
         series: [
           {
-            name: '数据检验情况1',
-            type: 'pie',
-            radius: ['40%', '70%'],
+            name: "数据检验情况1",
+            type: "pie",
+            radius: ["40%", "70%"],
             avoidLabelOverlap: false,
             hoverAnimation: false,
             legendHoverLink: false,
-            left: 'auto',
+            left: "auto",
             label: {
               show: false,
-              position: 'center'
+              position: "center",
             },
             emphasis: {
               label: {
                 show: false,
-                fontSize: '40',
-                fontWeight: 'bold'
-              }
+                fontSize: "40",
+                fontWeight: "bold",
+              },
             },
             labelLine: {
-              show: false
+              show: false,
             },
             data: [
               {
-                value: 300,
-                name: '规划数',
+                value: this.isEmpty(this.result.overview[0].total),
+                name: "总记录数",
                 itemStyle: {
-                  normal: { color: 'rgb(33,178,149)' },
-                  emphasis: { color: 'rgb(33,178,149)' }
-                }
+                  normal: { color: "rgb(33,178,149)" },
+                  emphasis: { color: "rgb(33,178,149)" },
+                },
               },
               {
-                value: 20,
-                name: '上传数',
+                value: this.isEmpty(this.result.overview[0].success),
+                name: "正确记录数",
                 itemStyle: {
-                  normal: { color: 'rgb(75,131,254)' },
-                  emphasis: { color: 'rgb(75,131,254)' }
-                }
-              }
-            ]
-          }
-        ]
-      })
+                  normal: { color: "rgb(75,131,254)" },
+                  emphasis: { color: "rgb(75,131,254)" },
+                },
+              },
+            ],
+          },
+        ],
+      });
     },
     // 数据质量校验情况柱状图
     dataCheckBottom() {
-      const dataCheckBottom = this.$echarts.init(this.$refs.datacheckbottom)
+      this.dataFilter(this.result.tableDetails);
+      const dataCheckBottom = this.$echarts.init(this.$refs.datacheckbottom);
       dataCheckBottom.setOption({
         legend: {
-          show: false
+          show: false,
         },
         tooltip: {
-          show: false
+          show: false,
         },
         dataset: {
-          source: [
-            ['check', 'right', 'wrong'],
-            ['20.07.02', 9800, 2500],
-            ['20.07.03', 9800, 2500],
-            ['20.07.04', 9800, 2500],
-            ['20.07.05', 9800, 2500],
-            ['20.07.07', 9800, 2500],
-            ['20.07.08', 9800, 2500],
-            ['20.07.09', 9800, 2500],
-            ['20.07.10', 9800, 2500]
-          ]
+          source: this.source,
         },
-        xAxis: { type: 'category' },
+        xAxis: { type: "category" },
         yAxis: {
-          min: '0',
-          max: '45000',
-          splitNumber: '9'
+          min: "0",
+          max: "45000",
+          splitNumber: "9",
         },
         series: [
           {
-            type: 'bar',
+            type: "bar",
             itemStyle: {
-              normal: { color: 'rgb(33,178,149)' },
-              emphasis: { color: 'rgb(33,178,149)' }
-            }
+              normal: { color: "rgb(33,178,149)" },
+              emphasis: { color: "rgb(33,178,149)" },
+            },
           },
           {
-            type: 'bar',
+            type: "bar",
             itemStyle: {
-              normal: { color: 'rgb(75,131,254)' },
-              emphasis: { color: 'rgb(75,131,254)' }
-            }
-          }
-        ]
-      })
-    }
-  }
-}
+              normal: { color: "rgb(75,131,254)" },
+              emphasis: { color: "rgb(75,131,254)" },
+            },
+          },
+        ],
+      });
+    },
+    // 数据质量校验情况柱状图数据过滤
+    dataFilter(Arr) {
+      let len = Arr.length;
+      for (let i = 0; i < len; i++) {
+        this.source.push([Arr[i].table_name, Arr[i].success, Arr[i].error]);
+      }
+      this.source.unshift(["check", "right", "wrong"]);
+    },
+    // 计算百分比
+    percentageCompute(numerator, denominator) {
+      let data = Math.round((numerator / denominator) * 100);
+
+      if (data) {
+        return data + "%";
+      } else {
+        return 0 + "%";
+      }
+    },
+    // 判断数值是否为空
+    isEmpty(data) {
+      return data === "" ? 0 : data;
+    },
+  },
+};
 </script>
