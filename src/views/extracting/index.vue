@@ -84,7 +84,7 @@ export default {
         endTime: "",
       },
       roleShow: false,
-      hospital: [1],
+      hospital: [],
       viewLoading: false,
     };
   },

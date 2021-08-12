@@ -32,7 +32,6 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     console.log('这是什么',res)
-
     return res
   },
   error => {
