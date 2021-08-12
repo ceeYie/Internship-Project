@@ -2,6 +2,7 @@
   <div class="containers">
     <!-- 左边 -->
     <div class="arts1">
+<<<<<<< HEAD
       <!-- 数据覆盖情况 -->
       <!-- 标题 -->
       <div style="padding: 20px">
@@ -35,16 +36,51 @@
                   class="el-icon-s-operation"
                   style="color: rgb(33, 178, 149)"
                 />
+=======
+      <div>
+        <div style="padding: 20px">
+          <span style="color: #21b295">|</span> 数据覆盖情况
+        </div>
+        <div class="content">
+          <div>
+            <div ref="coverChart" style="width: 300px; height: 300px" />
+            <div class="cover">
+              <div>
+                {{
+                  this.percentageCompute(
+                    this.result.coverage.uploadCount,
+                    this.result.coverage.projectCount
+                  )
+                }}
+>>>>>>> 6bf65a6a4aeb485e63f7b632f6c65c8f840e37f7
               </div>
+              <div>覆盖率</div>
             </div>
+<<<<<<< HEAD
             <div class="sidebar">
               <div class="sidenum">
                 {{ isEmpty(result.coverage.projectCount) }}
               </div>
               <div class="sidetext">规划数</div>
-            </div>
+=======
           </div>
+          <div>
+            <div class="content_planning">
+              <div>
+                <div class="icon">
+                  <i class="el-icon-s-operation" style="color: #39b99c" />
+                </div>
+              </div>
+              <div>
+                <div style="font-weight: 600">
+                  {{ isEmpty(result.coverage.projectCount) }}
+                </div>
+                <div style="font-size: 13px; color: #bbbbbb">规划数</div>
+              </div>
+>>>>>>> 6bf65a6a4aeb485e63f7b632f6c65c8f840e37f7
+            </div>
 
+<<<<<<< HEAD
           <div class="content_planning">
             <div>
               <div class="icon" style="background-color: rgb(33, 178, 149)">
@@ -56,11 +92,26 @@
                 {{ isEmpty(result.coverage.uploadCount) }}
               </div>
               <div class="sidetext">上传数</div>
+=======
+            <div class="content_planning">
+              <div>
+                <div class="icon">
+                  <i class="el-icon-upload2" style="color: #39b99c" />
+                </div>
+              </div>
+              <div class="shangChuan">
+                <div style="font-weight: 600">
+                  {{ isEmpty(result.coverage.uploadCount) }}
+                </div>
+                <div style="font-size: 13px; color: #bbbbbb">上传数</div>
+              </div>
+>>>>>>> 6bf65a6a4aeb485e63f7b632f6c65c8f840e37f7
             </div>
           </div>
         </div>
       </div>
 
+<<<<<<< HEAD
       <!-- 数据上传情况 -->
       <!-- 标题 -->
       <div style="padding: 20px">
@@ -89,16 +140,51 @@
             <div>
               <div class="icon" style="background-color: rgb(200, 218, 254)">
                 <i class="el-icon-coin" style="color: rgb(75, 131, 254)" />
+=======
+      <div>
+        <div style="padding: 20px">
+          <span style="color: #21b295">|</span> 数据上传情况
+        </div>
+        <div class="content">
+          <div>
+            <div ref="dataCheckChart1" style="width: 300px; height: 300px" />
+            <div class="cover">
+              <div>
+                {{
+                  this.percentageCompute(
+                    this.result.upload.uploadSuccess,
+                    this.result.upload.uploadCount
+                  )
+                }}
+>>>>>>> 6bf65a6a4aeb485e63f7b632f6c65c8f840e37f7
               </div>
+              <div>上传成功率</div>
             </div>
+<<<<<<< HEAD
             <div class="sidebar">
               <div class="sidenum">
                 {{ isEmpty(result.upload.uploadCount) }}
               </div>
               <div class="sidetext">上传数量</div>
-            </div>
+=======
           </div>
+          <div>
+            <div class="content_planning">
+              <div>
+                <div class="icon">
+                  <i class="el-icon-coin" style="color: #39b99c" />
+                </div>
+              </div>
+              <div>
+                <div style="font-weight: 600">
+                  {{ isEmpty(result.upload.uploadCount) }}
+                </div>
+                <div style="font-size: 13px; color: #bbbbbb">上传数量</div>
+              </div>
+>>>>>>> 6bf65a6a4aeb485e63f7b632f6c65c8f840e37f7
+            </div>
 
+<<<<<<< HEAD
           <div class="content_planning">
             <div>
               <div class="icon" style="background-color: rgb(75, 131, 254)">
@@ -110,6 +196,20 @@
                 {{ isEmpty(result.upload.uploadSuccess) }}
               </div>
               <div class="sidetext">上传成功数</div>
+=======
+            <div class="content_planning">
+              <div>
+                <div class="icon">
+                  <i class="el-icon-s-data" style="color: #39b99c" />
+                </div>
+              </div>
+              <div class="shangChuan">
+                <div style="font-weight: 600">
+                  {{ isEmpty(result.upload.uploadSuccess) }}
+                </div>
+                <div style="font-size: 13px; color: #bbbbbb">上传成功数</div>
+              </div>
+>>>>>>> 6bf65a6a4aeb485e63f7b632f6c65c8f840e37f7
             </div>
           </div>
         </div>
@@ -127,7 +227,11 @@
           <div style="position: relative">
             <div ref="dataCheckChart1" style="width: 300px; height: 300px" />
             <div class="cover">
+<<<<<<< HEAD
               <div class="number" style="color: rgb(33, 178, 149)">
+=======
+              <div>
+>>>>>>> 6bf65a6a4aeb485e63f7b632f6c65c8f840e37f7
                 {{
                   this.percentageCompute(
                     this.result.overview[0].success,
@@ -135,7 +239,11 @@
                   )
                 }}
               </div>
+<<<<<<< HEAD
               <div class="text">正确率</div>
+=======
+              <div>正确率</div>
+>>>>>>> 6bf65a6a4aeb485e63f7b632f6c65c8f840e37f7
             </div>
           </div>
           <div>
@@ -173,8 +281,13 @@
                   <i class="el-icon-document-delete" style="color: #fff" />
                 </div>
               </div>
+<<<<<<< HEAD
               <div class="sidebar">
                 <div class="sidenum">
+=======
+              <div class="shangChuan">
+                <div style="font-weight: 600">
+>>>>>>> 6bf65a6a4aeb485e63f7b632f6c65c8f840e37f7
                   {{ isEmpty(result.overview[0].error) }}
                 </div>
                 <div class="sidetext">错误记录数</div>
@@ -198,7 +311,13 @@
   display: flex;
   justify-content: space-between;
   .cover {
+<<<<<<< HEAD
     position: absolute;
+=======
+    position: relative;
+    left: 111px;
+    top: -165px;
+>>>>>>> 6bf65a6a4aeb485e63f7b632f6c65c8f840e37f7
     text-align: center;
     width: 100px;
     height: 100px;
