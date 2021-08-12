@@ -184,6 +184,7 @@ export default {
   methods: {
     //异常详情
     abnormalDetails(i){
+      this.showAbstract = true
       let data = {
         tableName:i.table_name,
         batchNo:i.batch_no
@@ -194,7 +195,6 @@ export default {
           }else{
             console.log(res); 
             this.abstractList = res.result
-            this.showAbstract = true
           }
       });
     },

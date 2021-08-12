@@ -8,11 +8,10 @@ const service = axios.create({
   timeout: 50000 // request timeout
 })
 
-let tonke = store.get('userToken')
 service.interceptors.request.use(
   config => {
-    console.log('config',config)
-    if(config.url==='/auth/oauth/token?grant_type=password'){
+    let tonke = store.get('userToken')
+    if(router.history.current.path==='/login'){
       config.headers['Authorization'] = 'Basic QVNQMDAwMTpBU1AwMDAx'
     }else{
       config.headers['Authorization'] = 'bearer '+tonke
@@ -31,7 +30,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
-    console.log('这是什么',res)
+    
     return res
   },
   error => {
