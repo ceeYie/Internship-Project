@@ -55,7 +55,7 @@
       </el-table-column>
     </el-table>
       <el-pagination
-      :current-page="pageVo.pageNumber"
+      :current-page="pageVo.pageNum"
       :page-sizes="[10, 20, 50, 100]"
       :page-size="pageVo.pageSize"
       :total="totalSize"
@@ -95,7 +95,7 @@
           </el-table-column>
         </el-table>
           <el-pagination
-          :current-page="pageVo.pageNumber"
+          :current-page="pageVo.pageNum"
           :page-sizes="[10, 20, 50, 100]"
           :page-size="pageVo.pageSize"
           :total="totalSize1"
@@ -163,7 +163,7 @@ export default {
     return {
       dialogVisible: false,
       showAbstract:false,
-      pageVo: { pageNumber: 1, pageSize: 10 },
+      pageVo: { pageNum: 1, pageSize: 10 },
       totalSize: 0,
       totalSize1:0,
       formSearch: {
@@ -207,15 +207,15 @@ export default {
         tableName:this.different.table_name,
         batchNo:this.different.batch_no
       }
-      data.pageNumber = this.pageVo.pageNumber;
+      data.pageNum = this.pageVo.pageNum;
       data.pageSize = this.pageVo.pageSize;
       errorTable(data).then(res => {
           if (res.code==500) {
             this.$message.error(res.msg);
           }else{
             console.log(res); 
-            this.abnormalList = res.result.pageList
-            this.totalSize1 = res.result.pageTotals
+            this.abnormalList = res.result.records
+            this.totalSize1 = Number(res.result.total)
             this.dialogVisible = true
           }
       });
@@ -230,15 +230,15 @@ export default {
     },
     //查询医院列表
     getHospital() {
-      this.formSearch.pageNumber = this.pageVo.pageNumber;
+      this.formSearch.pageNum = this.pageVo.pageNum;
       this.formSearch.pageSize = this.pageVo.pageSize;
       validateReport(this.formSearch).then(res => {
           if (res.code==500) {
             this.$message.error(res.msg);
           }else{
             console.log(res); 
-            this.hospital = res.result.pagelist
-            this.totalSize = res.result.pagetotals
+            this.hospital = res.result.records
+            this.totalSize = Number(res.result.total)
           }
       });
     },
@@ -248,12 +248,14 @@ export default {
     },
     //分页
     handleSizeChange(val) {
+      console.log(val)
       this.pageVo.pageSize = val;
       this.getHospital();
     },
     //分页
     handleCurrentChange(val) {
-      this.pageVo.currPage = val;
+      console.log(val)
+      this.pageVo.pageNum = val;
       this.getHospital();
     },
 
@@ -264,7 +266,7 @@ export default {
     },
     //异常列表分页
     handleCurrentChange1(val) {
-      this.pageVo.currPage = val;
+      this.pageVo.pageNum = val;
       this.abnormal();
     },
   },

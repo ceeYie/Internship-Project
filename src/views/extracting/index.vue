@@ -125,7 +125,7 @@ export default {
     },
     //分页
     handleCurrentChange(val) {
-      this.pageVo.currPage = val;
+      this.pageVo.pageNumber = val;
       this.logList();
     },
   },
