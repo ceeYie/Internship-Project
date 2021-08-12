@@ -2,164 +2,188 @@
   <div class="containers">
     <!-- 左边 -->
     <div class="arts1">
+      <!-- 数据覆盖情况 -->
+      <!-- 标题 -->
       <div style="padding: 20px">
         <span style="color: #21b295">|</span> 数据覆盖情况
       </div>
+      <!-- 统计图 -->
       <div class="content">
-        <div>
+        <!-- 左边图片部分 -->
+        <div style="position: relative">
+          <!-- 环形图 -->
           <div ref="coverChart" style="width: 300px; height: 300px" />
+          <!-- 覆盖率 -->
           <div class="cover">
-            <div>{{
-                  this.percentageCompute(
-                    this.result.coverage.uploadCount,
-                    this.result.coverage.projectCount
-                  )
-                }}</div>
-            <div>覆盖率</div>
+            <div class="number" style="color: rgb(33, 178, 149)">
+              {{
+                this.percentageCompute(
+                  this.result.coverage.uploadCount,
+                  this.result.coverage.projectCount
+                )
+              }}
+            </div>
+            <div class="text">覆盖率</div>
           </div>
         </div>
+        <!-- 右边栏 -->
         <div>
           <div class="content_planning">
             <div>
-              <div class="icon">
-                <i class="el-icon-s-operation" style="color: #39b99c" />
+              <div class="icon" style="background-color: rgb(188, 235, 225)">
+                <i
+                  class="el-icon-s-operation"
+                  style="color: rgb(33, 178, 149)"
+                />
               </div>
             </div>
-            <div>
-              <div style="font-weight: 600">
+            <div class="sidebar">
+              <div class="sidenum">
                 {{ isEmpty(result.coverage.projectCount) }}
               </div>
-              <div style="font-size: 13px; color: #bbbbbb">规划数</div>
+              <div class="sidetext">规划数</div>
             </div>
           </div>
 
           <div class="content_planning">
             <div>
-              <div class="icon">
-                <i class="el-icon-upload2" style="color: #39b99c" />
+              <div class="icon" style="background-color: rgb(33, 178, 149)">
+                <i class="el-icon-upload2" style="color: #fff" />
               </div>
             </div>
-            <div class="shangChuan">
-              <div style="font-weight: 600">
+            <div class="sidebar">
+              <div class="sidenum">
                 {{ isEmpty(result.coverage.uploadCount) }}
               </div>
-              <div style="font-size: 13px; color: #bbbbbb">上传数</div>
+              <div class="sidetext">上传数</div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- 数据上传情况 -->
+      <!-- 标题 -->
       <div style="padding: 20px">
         <span style="color: #21b295">|</span> 数据上传情况
       </div>
+      <!-- 统计图 -->
       <div class="content">
-        <div>
-          <div ref="dataCheckChart1" style="width: 300px; height: 300px" />
+        <!-- 左边图片部分 -->
+        <div style="position: relative">
+          <div ref="uploadChart" style="width: 300px; height: 300px" />
           <div class="cover">
-            <div>{{
-                  this.percentageCompute(
-                    this.result.upload.uploadSuccess,
-                    this.result.upload.uploadCount
-                  )
-                }}</div>
-            <div>上传成功率</div>
+            <div class="number" style="color: rgb(75, 131, 254)">
+              {{
+                this.percentageCompute(
+                  this.result.upload.uploadSuccess,
+                  this.result.upload.uploadCount
+                )
+              }}
+            </div>
+            <div class="text">上传成功率</div>
           </div>
         </div>
+        <!-- 右边栏 -->
         <div>
           <div class="content_planning">
             <div>
-              <div class="icon">
-                <i class="el-icon-coin" style="color: #39b99c" />
+              <div class="icon" style="background-color: rgb(200, 218, 254)">
+                <i class="el-icon-coin" style="color: rgb(75, 131, 254)" />
               </div>
             </div>
-            <div>
-              <div style="font-weight: 600">
+            <div class="sidebar">
+              <div class="sidenum">
                 {{ isEmpty(result.upload.uploadCount) }}
               </div>
-              <div style="font-size: 13px; color: #bbbbbb">上传数量</div>
+              <div class="sidetext">上传数量</div>
             </div>
           </div>
 
           <div class="content_planning">
             <div>
-              <div class="icon">
-                <i class="el-icon-s-data" style="color: #39b99c" />
+              <div class="icon" style="background-color: rgb(75, 131, 254)">
+                <i class="el-icon-s-data" style="color: #fff" />
               </div>
             </div>
-            <div class="shangChuan">
-              <div style="font-weight: 600">
+            <div class="sidebar">
+              <div class="sidenum">
                 {{ isEmpty(result.upload.uploadSuccess) }}
               </div>
-              <div style="font-size: 13px; color: #bbbbbb">上传成功数</div>
+              <div class="sidetext">上传成功数</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- 右边 -->
     <div class="arts2">
+      <!-- 环形图部分 -->
       <div>
         <div style="padding: 20px">
           <span style="color: #21b295">|</span> 数据质量校验情况
         </div>
         <div class="content">
-          <div>
-            <div ref="uploadChart" style="width: 300px; height: 300px" />
+          <div style="position: relative">
+            <div ref="dataCheckChart1" style="width: 300px; height: 300px" />
             <div class="cover">
-            <div>{{
+              <div class="number" style="color: rgb(33, 178, 149)">
+                {{
                   this.percentageCompute(
                     this.result.overview[0].success,
                     this.result.overview[0].total
                   )
-                }}</div>
-            <div>正确率</div>
-          </div>
+                }}
+              </div>
+              <div class="text">正确率</div>
+            </div>
           </div>
           <div>
             <div class="content_planning">
               <div>
-                <div class="icon">
-                  <i class="el-icon-coin" style="color: #39b99c" />
+                <div class="icon" style="background-color: rgb(188, 235, 225)">
+                  <i class="el-icon-coin" style="color: rgb(33, 178, 149)" />
                 </div>
               </div>
-              <div>
-                <div style="font-weight: 600">
+              <div class="sidebar">
+                <div class="sidenum">
                   {{ isEmpty(result.overview[0].total) }}
                 </div>
-                <div style="font-size: 13px; color: #bbbbbb">总记录数</div>
+                <div class="sidetext">总记录数</div>
               </div>
             </div>
 
             <div class="content_planning">
               <div>
-                <div class="icon">
-                  <i class="el-icon-document-checked" style="color: #39b99c" />
+                <div class="icon" style="background-color: rgb(33, 178, 149)">
+                  <i class="el-icon-document-checked" style="color: #fff" />
                 </div>
               </div>
-              <div class="shangChuan">
-                <div style="font-weight: 600">
+              <div class="sidebar">
+                <div class="sidenum">
                   {{ isEmpty(result.overview[0].success) }}
                 </div>
-                <div style="font-size: 13px; color: #bbbbbb">正确记录数</div>
+                <div class="sidetext">正确记录数</div>
               </div>
             </div>
 
             <div class="content_planning">
               <div>
-                <div class="icon">
-                  <i class="el-icon-document-delete" style="color: #39b99c" />
+                <div class="icon" style="background-color: rgb(75, 131, 254)">
+                  <i class="el-icon-document-delete" style="color: #fff" />
                 </div>
               </div>
-              <div class="shangChuan">
-                <div style="font-weight: 600">
-                 {{ isEmpty(result.overview[0].error) }}
+              <div class="sidebar">
+                <div class="sidenum">
+                  {{ isEmpty(result.overview[0].error) }}
                 </div>
-                <div style="font-size: 13px; color: #bbbbbb">错误记录数</div>
+                <div class="sidetext">错误记录数</div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <!-- 柱状图部分 -->
       <div>
         <div ref="datacheckbottom" style="width: 100%; height: 500px" />
       </div>
@@ -173,12 +197,28 @@
   background-color: #e4edea;
   display: flex;
   justify-content: space-between;
-  .cover{
-    position: relative;
-    left: 111px;
-    top: -165px;
+  .cover {
+    position: absolute;
     text-align: center;
-    width: 86px;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    top: 50%;
+    margin-left: -50px;
+    margin-top: -50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .number {
+      font-size: 40px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 40px;
+    }
+    .text {
+      font-size: 14px;
+      color: #808080;
+    }
   }
   .arts1 {
     background-color: white;
@@ -197,6 +237,7 @@
     background-color: #bcebe1;
     width: 40px;
     height: 40px;
+    font-size: 30px;
     border-radius: 7px;
     text-align: center;
     line-height: 40px;
@@ -205,8 +246,19 @@
     padding: 30px;
     display: flex;
     text-align: center;
-    div:nth-child(2) {
-      padding-left: 10px;
+    .sidebar {
+      margin-left: 20px;
+      .sidenum {
+        font-size: 20px;
+        font-weight: 600;
+        text-align: left;
+        text-indent: 10px;
+        margin-bottom: 5px;
+      }
+      .sidetext {
+        font-size: 13px;
+        color: #808080;
+      }
     }
   }
 }
@@ -267,7 +319,7 @@ export default {
       // 绘制图表
       coverChart.setOption({
         tooltip: {
-          show: false,
+          show: true,
           trigger: "item",
           axisPointer: {
             label: {
@@ -290,7 +342,7 @@ export default {
             type: "pie",
             radius: ["40%", "70%"],
             avoidLabelOverlap: false,
-            hoverAnimation: false,
+            hoverAnimation: true,
             legendHoverLink: false,
             left: "auto",
             label: {
@@ -335,7 +387,7 @@ export default {
       const uploadChart = this.$echarts.init(this.$refs.uploadChart);
       uploadChart.setOption({
         tooltip: {
-          show: false,
+          show: true,
           trigger: "item",
           axisPointer: {
             label: {
@@ -349,7 +401,7 @@ export default {
         legend: {
           show: false,
           selectorLabel: {
-            show: false,
+            show: true,
           },
         },
         series: [
@@ -358,7 +410,7 @@ export default {
             type: "pie",
             radius: ["40%", "70%"],
             avoidLabelOverlap: false,
-            hoverAnimation: false,
+            hoverAnimation: true,
             legendHoverLink: false,
             left: "auto",
             label: {
@@ -402,7 +454,7 @@ export default {
       const dataCheckChart1 = this.$echarts.init(this.$refs.dataCheckChart1);
       dataCheckChart1.setOption({
         tooltip: {
-          show: false,
+          show: true,
           trigger: "item",
           axisPointer: {
             label: {
@@ -416,7 +468,7 @@ export default {
         legend: {
           show: false,
           selectorLabel: {
-            show: false,
+            show: true,
           },
         },
         series: [
@@ -425,7 +477,7 @@ export default {
             type: "pie",
             radius: ["40%", "70%"],
             avoidLabelOverlap: false,
-            hoverAnimation: false,
+            hoverAnimation: true,
             legendHoverLink: false,
             left: "auto",
             label: {
@@ -444,19 +496,19 @@ export default {
             },
             data: [
               {
-                value: this.isEmpty(this.result.overview[0].total),
-                name: "总记录数",
+                value: this.isEmpty(this.result.overview[0].error),
+                name: "错误记录数",
                 itemStyle: {
-                  normal: { color: "rgb(33,178,149)" },
-                  emphasis: { color: "rgb(33,178,149)" },
+                  normal: { color: "rgb(75,131,254)" },
+                  emphasis: { color: "rgb(75,131,254)" },
                 },
               },
               {
                 value: this.isEmpty(this.result.overview[0].success),
                 name: "正确记录数",
                 itemStyle: {
-                  normal: { color: "rgb(75,131,254)" },
-                  emphasis: { color: "rgb(75,131,254)" },
+                  normal: { color: "rgb(33,178,149)" },
+                  emphasis: { color: "rgb(33,178,149)" },
                 },
               },
             ],
@@ -466,22 +518,21 @@ export default {
     },
     // 数据质量校验情况柱状图
     dataCheckBottom() {
-      this.dataFilter(this.result.tableDetails);
       const dataCheckBottom = this.$echarts.init(this.$refs.datacheckbottom);
       dataCheckBottom.setOption({
         legend: {
           show: false,
         },
         tooltip: {
-          show: false,
+          show: true,
         },
         dataset: {
-          source: this.source,
+          source: this.dataFilter(this.result.tableDetails),
         },
         xAxis: { type: "category" },
         yAxis: {
           min: "0",
-          max: "45000",
+          max: "dataMax",
           splitNumber: "9",
         },
         series: [
@@ -505,10 +556,17 @@ export default {
     // 数据质量校验情况柱状图数据过滤
     dataFilter(Arr) {
       let len = Arr.length;
+      const source = [];
       for (let i = 0; i < len; i++) {
-        this.source.push([Arr[i].table_name, Arr[i].success, Arr[i].error]);
+        // 把数据转换成数组，不然会识别第一行为dimension!!
+        source.push([
+          Arr[i].table_name,
+          parseInt(Arr[i].success),
+          parseInt(Arr[i].error),
+        ]);
       }
-      this.source.unshift(["check", "right", "wrong"]);
+      console.log(source);
+      return source;
     },
     // 计算百分比
     percentageCompute(numerator, denominator) {
