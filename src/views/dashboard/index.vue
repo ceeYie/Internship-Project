@@ -537,6 +537,7 @@ export default {
         },
         series: [
           {
+            name:'成功',
             type: "bar",
             itemStyle: {
               normal: { color: "rgb(33,178,149)" },
@@ -544,6 +545,7 @@ export default {
             },
           },
           {
+             name:'失败',
             type: "bar",
             itemStyle: {
               normal: { color: "rgb(75,131,254)" },

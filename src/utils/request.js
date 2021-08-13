@@ -2,7 +2,6 @@ import axios from 'axios'
 import {  Message } from 'element-ui'
 import store from '@/utils/auth'
 import router from '../router'
-// create an axios instance
 const service = axios.create({
   baseURL: 'api', // process.env.VUE_APP_BASE_API
   timeout: 50000 // request timeout
