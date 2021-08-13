@@ -533,7 +533,13 @@ export default {
         dataset: {
           source: this.dataFilter(this.result.tableDetails),
         },
-        xAxis: { type: "category" },
+        xAxis: { 
+          type: "category",
+          axisLabel:{
+            interval:0,
+            rotate:-30
+          }
+          },
         yAxis: {
           min: "0",
           max: "dataMax",
