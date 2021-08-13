@@ -120,12 +120,16 @@
     <div class="arts2">
       <!-- 环形图部分 -->
       <div>
+        <!-- 标题 -->
         <div style="padding: 20px">
           <span style="color: #21b295">|</span> 数据质量校验情况
         </div>
+        <!-- 统计图部分 -->
         <div class="content">
           <div style="position: relative">
+            <!-- 统计图 -->
             <div ref="dataCheckChart1" style="width: 300px; height: 300px" />
+            <!-- 正确率 -->
             <div class="cover">
               <div class="number" style="color: rgb(33, 178, 149)">
                 {{
@@ -529,7 +533,13 @@ export default {
         dataset: {
           source: this.dataFilter(this.result.tableDetails),
         },
-        xAxis: { type: "category" },
+        xAxis: { 
+          type: "category",
+          axisLabel:{
+            interval:0,
+            rotate:-30
+          }
+          },
         yAxis: {
           min: "0",
           max: "dataMax",
@@ -560,7 +570,7 @@ export default {
       let len = Arr.length;
       const source = [];
       for (let i = 0; i < len; i++) {
-        // 把数据转换成数组，不然会识别第一行为dimension!!
+        // 把数据转换成number类型，不然会识别第一行为dimension!!
         source.push([
           Arr[i].table_name,
           parseInt(Arr[i].success),
