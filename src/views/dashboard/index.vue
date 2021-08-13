@@ -545,7 +545,7 @@ export default {
             },
           },
           {
-             name:'失败',
+            name:'失败',
             type: "bar",
             itemStyle: {
               normal: { color: "rgb(75,131,254)" },
