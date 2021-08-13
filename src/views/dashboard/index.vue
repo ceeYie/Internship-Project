@@ -365,7 +365,7 @@ export default {
             },
             data: [
               {
-                value: this.isEmpty(this.result.upload.uploadSuccess),
+                value: this.isEmpty(this.result.coverage.projectCount - this.result.coverage.uploadCount),
                 name: "规划数",
                 itemStyle: {
                   normal: { color: "rgb(188,235,225)" },
