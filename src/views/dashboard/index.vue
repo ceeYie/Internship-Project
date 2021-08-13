@@ -433,8 +433,8 @@ export default {
             },
             data: [
               {
-                value: this.isEmpty(this.result.upload.uploadCount),
-                name: "上传数据量",
+                value: this.isEmpty(this.result.upload.uploadCount - this.result.upload.uploadSuccess),
+                name: "上传失败数",
                 itemStyle: {
                   normal: { color: "rgb(200,218,254)" },
                   emphasis: { color: "rgb(200,218,254)" },
